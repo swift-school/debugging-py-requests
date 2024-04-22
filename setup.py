@@ -10,6 +10,7 @@ from setuptools.command.test import test as TestCommand
 
 here = os.path.abspath(os.path.dirname(__file__))
 
+
 class PyTest(TestCommand):
     user_options = [('pytest-args=', 'a', "Arguments to pass into py.test")]
 
@@ -17,9 +18,9 @@ class PyTest(TestCommand):
         TestCommand.initialize_options(self)
         try:
             from multiprocessing import cpu_count
-            self.pytest_args = ['-n', str(cpu_count()), '--boxed']
+            self.pytest_args = ['-n', str(cpu_count())]
         except (ImportError, NotImplementedError):
-            self.pytest_args = ['-n', '1', '--boxed']
+            self.pytest_args = ['-n', '1']
 
     def finalize_options(self):
         TestCommand.finalize_options(self)
@@ -31,6 +32,7 @@ class PyTest(TestCommand):
 
         errno = pytest.main(self.pytest_args)
         sys.exit(errno)
+
 
 # 'setup.py publish' shortcut.
 if sys.argv[-1] == 'publish':

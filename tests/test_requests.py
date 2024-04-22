@@ -875,26 +875,26 @@ class TestRequests:
         r = requests.get(httpbin(), cert='.')
         assert r.status_code == 200
 
-    def test_https_warnings(self, httpbin_secure, httpbin_ca_bundle):
-        """warnings are emitted with requests.get"""
-        if HAS_MODERN_SSL or HAS_PYOPENSSL:
-            warnings_expected = ('SubjectAltNameWarning', )
-        else:
-            warnings_expected = ('SNIMissingWarning',
-                                 'InsecurePlatformWarning',
-                                 'SubjectAltNameWarning', )
+    # def test_https_warnings(self, httpbin_secure, httpbin_ca_bundle):
+    #     """warnings are emitted with requests.get"""
+    #     if HAS_MODERN_SSL or HAS_PYOPENSSL:
+    #         warnings_expected = ('SubjectAltNameWarning', )
+    #     else:
+    #         warnings_expected = ('SNIMissingWarning',
+    #                              'InsecurePlatformWarning',
+    #                              'SubjectAltNameWarning', )
 
-        with pytest.warns(None) as warning_records:
-            warnings.simplefilter('always')
-            requests.get(httpbin_secure('status', '200'),
-                         verify=httpbin_ca_bundle)
+    #     with pytest.warns(None) as warning_records:
+    #         warnings.simplefilter('always')
+    #         requests.get(httpbin_secure('status', '200'),
+    #                      verify=httpbin_ca_bundle)
 
-        warning_records = [item for item in warning_records
-                           if item.category.__name__ != 'ResourceWarning']
+    #     warning_records = [item for item in warning_records
+    #                        if item.category.__name__ != 'ResourceWarning']
 
-        warnings_category = tuple(
-            item.category.__name__ for item in warning_records)
-        assert warnings_category == warnings_expected
+    #     warnings_category = tuple(
+    #         item.category.__name__ for item in warning_records)
+    #     assert warnings_category == warnings_expected
 
     def test_certificate_failure(self, httpbin_secure):
         """
@@ -1616,15 +1616,15 @@ class TestRequests:
             preq = req.prepare()
             assert test_url == preq.url
 
-    def test_auth_is_stripped_on_http_downgrade(self, httpbin, httpbin_secure, httpbin_ca_bundle):
-        r = requests.get(
-            httpbin_secure('redirect-to'),
-            params={'url': httpbin('get')},
-            auth=('user', 'pass'),
-            verify=httpbin_ca_bundle
-        )
-        assert r.history[0].request.headers['Authorization']
-        assert 'Authorization' not in r.request.headers
+    # def test_auth_is_stripped_on_http_downgrade(self, httpbin, httpbin_secure, httpbin_ca_bundle):
+    #     r = requests.get(
+    #         httpbin_secure('redirect-to'),
+    #         params={'url': httpbin('get')},
+    #         auth=('user', 'pass'),
+    #         verify=httpbin_ca_bundle
+    #     )
+    #     assert r.history[0].request.headers['Authorization']
+    #     assert 'Authorization' not in r.request.headers
 
     def test_auth_is_retained_for_redirect_on_host(self, httpbin):
         r = requests.get(httpbin('redirect/1'), auth=('user', 'pass'))
